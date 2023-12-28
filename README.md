@@ -33,3 +33,24 @@ A cryptocurrency exchange app written in Go.
 ## Notes
 
 This is a simplified example for educational purposes only. Building a production-ready cryptocurrency exchange involves various complexities and considerations, including security, compliance, and performance.
+
+
+
+## Contributing
+
+Feel free to contribute to the project by opening issues or pull requests.
+
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+
+## Author
+
+👤 **Aras Güngöre**
+
+- LinkedIn: [@arasgungore](https://www.linkedin.com/in/arasgungore)
+- GitHub: [@arasgungore](https://github.com/arasgungore)
