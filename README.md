@@ -1,6 +1,6 @@
 # Cryptify
 
-The Cryptify App is a cryptocurrency exchange application that allows users to register, authenticate, trade cryptocurrencies, and visualize real-time or mock chart data. The application is built with Go and incorporates basic functionalities to provide a starting point for further development.
+The Cryptify App is a cryptocurrency exchange application that allows users to register, authenticate, trade cryptocurrencies, and visualize real-time chart data. The application is built with Go and incorporates basic functionalities to provide a starting point for further development.
 
 
 
