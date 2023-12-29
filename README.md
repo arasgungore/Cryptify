@@ -1,57 +1,62 @@
 # Cryptify
 
-A cryptocurrency exchange app written in Go.
+The Cryptify App is a simple cryptocurrency exchange application that allows users to register, authenticate, trade cryptocurrencies, and visualize real-time or mock chart data. The application is built with Go and incorporates basic functionalities to provide a starting point for further development.
 
 
 
-## Project Structure
+## Features
 
-- `cmd/`: Main application entry point
-  - `main.go`: Main application file
+- **Authentication:**
+  - User registration with email verification.
+  - User login with email and password.
+  - Secure password hashing.
 
-- `internal/`: Internal packages
-  - `authentication/`: User authentication package
-    - `authentication.go`: User authentication logic
-  - `order/`: Order package
-    - `order.go`: Order and order service logic
-  - `trading/`: Trading package
-    - `trading.go`: Trading engine logic
-  - `wallet/`: Wallet package
-    - `wallet.go`: User wallet logic
+- **Trading:**
+  - Basic trading engine for executing buy and sell orders.
+  - Integration with a cryptocurrency exchange (Binance API).
 
-- `pkg/`: External packages
-  - `database/`: Simulated in-memory database
-    - `database.go`: Database logic
+- **Wallet:**
+  - User wallet for managing cryptocurrency balances.
+  - Transaction history tracking.
 
-- `web/`: Web-related packages
-  - `exchange/`: Exchange-related web handlers
-    - `exchange.go`: HTTP handlers for buy, sell, and chart requests
-  - `chart/`: Chart-related functionality
-    - `chart.go`: Chart data provider interface
-    - `mock_provider.go`: Mock implementation of the chart data provider
+- **Chart Visualization:**
+  - Real-time chart data using the Binance API.
+  - Mock chart data for testing purposes.
 
 
 
-## Usage
+## Getting Started
 
-1. Navigate to the project directory: `cd cryptify_app`
-2. Run the application: `go run cmd/main.go`
-3. Open your web browser and visit:
-   - Buy: [http://localhost:8080/buy](http://localhost:8080/buy)
-   - Sell: [http://localhost:8080/sell](http://localhost:8080/sell)
-   - Chart for BTC: [http://localhost:8080/chart?currency=BTC](http://localhost:8080/chart?currency=BTC)
+1. **Navigate to the Project Directory:**
+   ```bash
+   cd cryptify_app
+   ```
 
+2. **Create a `.env` File:**
+   Create a `.env` file at the root of the project and add your Binance API key and secret (if using real chart data).
+   ```env
+   BINANCE_API_KEY=your_binance_api_key
+   BINANCE_API_SECRET=your_binance_api_secret
+   ```
 
+3. **Install Dependencies:**
+   ```bash
+   go mod tidy
+   ```
 
-## Notes
+4. **Run the Application:**
+   ```bash
+   go run main.go
+   ```
 
-This example includes additional features such as a wallet, chart tracking, and basic web functionality. However, it is still a simplified version and may not cover all aspects of a real-world cryptocurrency exchange.
+5. **Access the App:**
+   Open your web browser and go to [http://localhost:8080](http://localhost:8080) to access the application.
 
 
 
 ## Contributing
 
-Feel free to contribute to the project by opening issues or pull requests.
+If you find any issues or have suggestions for improvement, feel free to open an issue or submit a pull request. Contributions are welcome!
 
 
 

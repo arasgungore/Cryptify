@@ -2,33 +2,29 @@ package chart
 
 import (
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"time"
 )
 
-// RealProvider is an implementation of the chart data provider that fetches real data from an external API
-type RealProvider struct {
-	APIURL string
+// Provider defines the interface for a chart data provider
+type Provider interface {
+	GetChartData(currency string, startTime, endTime time.Time) (string, error)
 }
 
-// GetChartData returns real chart data from the external API
-func (r *RealProvider) GetChartData(currency string, startTime, endTime time.Time) (string, error) {
-	// Construct API URL with parameters
-	apiURL := fmt.Sprintf("%s?currency=%s&start=%s&end=%s", r.APIURL, currency, startTime.Format(time.RFC3339), endTime.Format(time.RFC3339))
+// BinanceProvider is an implementation of the chart data provider using the Binance API
+type BinanceProvider struct {
+	BinanceClient *BinanceClient
+}
 
-	// Make HTTP request to the external API
-	resp, err := http.Get(apiURL)
+// GetChartData returns real chart data from the Binance API
+func (b *BinanceProvider) GetChartData(currency string, startTime, endTime time.Time) (string, error) {
+	// Specify the trading pair symbol on Binance (e.g., "BTCUSDT")
+	symbol := fmt.Sprintf("%sUSDT", currency)
+
+	// Fetch real chart data using the Binance API client
+	chartData, err := b.BinanceClient.GetChartData(symbol, startTime, endTime)
 	if err != nil {
 		return "", fmt.Errorf("failed to fetch real chart data: %v", err)
 	}
-	defer resp.Body.Close()
 
-	// Read the response body
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return "", fmt.Errorf("failed to read response body: %v", err)
-	}
-
-	return string(body), nil
+	return chartData, nil
 }
