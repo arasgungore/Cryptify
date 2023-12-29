@@ -3,8 +3,10 @@ package exchange
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
+	"github.com/arasgungore/Cryptify/cryptify_app/internal/order"
 	"github.com/arasgungore/Cryptify/cryptify_app/internal/trading"
 	"github.com/arasgungore/Cryptify/cryptify_app/internal/wallet"
 	"github.com/arasgungore/Cryptify/cryptify_app/web/chart"
@@ -39,12 +41,75 @@ func (e *ExchangeHandler) StartServer() {
 
 // buyHandler handles the buy request
 func (e *ExchangeHandler) buyHandler(w http.ResponseWriter, r *http.Request) {
-	// Handle buy request
+	userID := 1 // Replace with your authentication logic
+	quantityStr := r.URL.Query().Get("quantity")
+	priceStr := r.URL.Query().Get("price")
+
+	if quantityStr == "" || priceStr == "" {
+		http.Error(w, "Quantity and price parameters are required", http.StatusBadRequest)
+		return
+	}
+
+	quantity, err := strconv.ParseFloat(quantityStr, 64)
+	if err != nil {
+		http.Error(w, "Invalid quantity parameter", http.StatusBadRequest)
+		return
+	}
+
+	price, err := strconv.ParseFloat(priceStr, 64)
+	if err != nil {
+		http.Error(w, "Invalid price parameter", http.StatusBadRequest)
+		return
+	}
+
+	baseCurrency := "BTC"  // Replace with your logic to determine the base currency
+	quoteCurrency := "USD" // Replace with your logic to determine the quote currency
+	orderType := order.Buy // This is a buy order
+	orderID := e.tradingEngine.ProcessOrder(userID, baseCurrency, quoteCurrency, orderType, quantity, price)
+
+	// Update user's wallet
+	totalCost := quantity * price
+	e.userWallet.SubtractFromBalance(quoteCurrency, totalCost)
+	e.userWallet.AddToBalance(baseCurrency, quantity)
+
+	// Display order details
+	fmt.Fprintf(w, "Buy order placed successfully! Order ID: %d\n", orderID)
 }
 
 // sellHandler handles the sell request
 func (e *ExchangeHandler) sellHandler(w http.ResponseWriter, r *http.Request) {
-	// Handle sell request
+	userID := 1 // Replace with your authentication logic
+	quantityStr := r.URL.Query().Get("quantity")
+	priceStr := r.URL.Query().Get("price")
+
+	if quantityStr == "" || priceStr == "" {
+		http.Error(w, "Quantity and price parameters are required", http.StatusBadRequest)
+		return
+	}
+
+	quantity, err := strconv.ParseFloat(quantityStr, 64)
+	if err != nil {
+		http.Error(w, "Invalid quantity parameter", http.StatusBadRequest)
+		return
+	}
+
+	price, err := strconv.ParseFloat(priceStr, 64)
+	if err != nil {
+		http.Error(w, "Invalid price parameter", http.StatusBadRequest)
+		return
+	}
+
+	baseCurrency := "BTC"   // Replace with your logic to determine the base currency
+	quoteCurrency := "USD"  // Replace with your logic to determine the quote currency
+	orderType := order.Sell // This is a sell order
+	orderID := e.tradingEngine.ProcessOrder(userID, baseCurrency, quoteCurrency, orderType, quantity, price)
+
+	// Update user's wallet
+	e.userWallet.SubtractFromBalance(baseCurrency, quantity)
+	e.userWallet.AddToBalance(quoteCurrency, quantity*price)
+
+	// Display order details
+	fmt.Fprintf(w, "Sell order placed successfully! Order ID: %d\n", orderID)
 }
 
 // chartHandler handles the chart request
